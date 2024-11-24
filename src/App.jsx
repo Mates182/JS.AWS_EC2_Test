@@ -26,8 +26,6 @@ function App() {
       </div>
       <h1>Hello World from AWS EC2!</h1>
       <h2>By: Mateo Pillajo :D</h2>
-      <p>This is a test for main branch</p>
-      <p>This is another testxd</p>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
