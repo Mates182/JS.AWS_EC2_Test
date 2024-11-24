@@ -14,15 +14,22 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Deploy to EC2
+      uses: easingthemes/ssh-deploy@main
       env:
-        HOST: ${{ secrets.EC2_HOST }}
-        USER: ${{ secrets.EC2_USER }}
-        PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-      run: |
-        ssh -i "${{ env.PRIVATE_KEY }}" ${{ env.USER }}@${{ env.HOST }} << 'EOF'
-        cd /JS.AWS_EC2_TEST
-        git pull origin test
-        npm install
-        npm run build
-        npm run dev
-        EOF
+        SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+        REMOTE_HOST: ${{ secrets.HOST_DNS }}
+        REMOTE_USER: ${{ secrets.EC2_USER }}
+        TARGET: ${{ secrets.TARGET_DIR }}
+
+    - name: Executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST_DNS }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /JS.AWS_EC2_TEST
+          git pull origin test
+          npm install
+          npm run build
+          npm run dev
