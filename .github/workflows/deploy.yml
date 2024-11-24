@@ -29,7 +29,7 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           git pull origin test
-          ls
+          cd JS.AWS_EC2_Test
           npm install
           npm run build
           npm run dev
