@@ -1,0 +1,28 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v3
+
+    - name: Deploy to EC2
+      env:
+        HOST: ${{ secrets.EC2_HOST }}
+        USER: ${{ secrets.EC2_USER }}
+        PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+      run: |
+        ssh -i "${{ env.PRIVATE_KEY }}" ${{ env.USER }}@${{ env.HOST }} << 'EOF'
+        cd /JS.AWS_EC2_TEST
+        git pull origin test
+        npm install
+        npm run build
+        npm run dev
+        EOF
