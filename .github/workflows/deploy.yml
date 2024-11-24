@@ -33,5 +33,5 @@ jobs:
           git pull origin test
           npm install
           npm run build
-          nohup npm run dev &
+          http-server dist -p 8080
           echo "Application is running in the background."
